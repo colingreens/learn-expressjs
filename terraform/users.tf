@@ -40,3 +40,19 @@ resource "random_password" "jim_sales" {
     min_upper = 2
 }
 
+resource "azuread_user" "norm" {
+  user_principal_name = "norm@colingreens.dev"
+  display_name = "Norm"
+  mail_nickname = "Just_Norm"
+  password = random_password.norm.result
+}
+
+resource "random_password" "norm" { 
+    length = 16
+    special = true
+    min_lower = 2
+    min_special = 2
+    min_numeric = 2
+    min_upper = 2
+}
+
