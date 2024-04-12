@@ -6,6 +6,7 @@ import * as msal from "@azure/msal-node";
 dotenv.config();
 
 const port = process.env.PORT || 3000;
+const host = process.env.HOST!;
 const tenantId = process.env.TENANT_ID!;
 const clientId = process.env.CLIENT_ID!;
 const clientSecret = process.env.CLIENT_SECRET!;
@@ -62,7 +63,7 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/signin", (req: Request, res: Response) => {
   const authCodeUrlParameters: msal.AuthorizationUrlRequest = {
     scopes: ["user.read"],
-    redirectUri: "http://localhost:3000/redirect",
+    redirectUri: `http://${host}:${port}/redirect`,
   };
   pca
     .getAuthCodeUrl(authCodeUrlParameters)
@@ -75,7 +76,7 @@ app.get("/signin", (req: Request, res: Response) => {
 app.get("/redirect", (req: Request, res: Response) => {
   const tokenRequest: msal.AuthorizationCodeRequest = {
     code: req.query.code as string,
-    redirectUri: "http://localhost:3000/redirect",
+    redirectUri: `http://${host}:${port}/redirect`,
     scopes: ["user.read"],
   };
   pca.acquireTokenByCode(tokenRequest).then((response) => {
@@ -113,5 +114,5 @@ app.get("/logout", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`[server]: Server is running at http://${host}:${port}`);
 });
