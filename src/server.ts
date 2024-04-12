@@ -5,8 +5,8 @@ import * as msal from "@azure/msal-node";
 
 dotenv.config();
 
-const port = process.env.PORT || 3000;
-const host = process.env.HOST!;
+const port = process.env.SERVER_PORT || 3000;
+const host = process.env.WEBSITE_HOSTNAME!;
 const tenantId = process.env.TENANT_ID!;
 const clientId = process.env.CLIENT_ID!;
 const clientSecret = process.env.CLIENT_SECRET!;
