@@ -8,7 +8,7 @@ resource "azuread_group" "managers" {
 
 resource "azurerm_role_assignment" "managers" {
   scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Contributor"
+  role_definition_name = "Reader"
   principal_id         = azuread_group.managers.object_id
 }
 
