@@ -27,6 +27,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Build to JavaScript
+        run: npm run build
+
       - name: "Deploy to Azure WebApp"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
