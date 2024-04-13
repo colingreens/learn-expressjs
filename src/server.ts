@@ -47,6 +47,8 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 function checkUserRole(req: Request, res: Response, next: NextFunction) {
   pca.getAllAccounts().then((accounts) => {
+    console.log(JSON.stringify(accounts));
+    console.log(accounts[0].idTokenClaims?.groups);
     const group: string = accounts[0].idTokenClaims?.groups[0];
     if (group === groupMap.manager) {
       res.send(widgetHtmlForManager);
