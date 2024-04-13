@@ -63,7 +63,7 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/signin", (req: Request, res: Response) => {
   const authCodeUrlParameters: msal.AuthorizationUrlRequest = {
     scopes: ["user.read"],
-    redirectUri: `http://${host}:${port}/redirect`,
+    redirectUri: `http://${host}/redirect`,
   };
   pca
     .getAuthCodeUrl(authCodeUrlParameters)
@@ -76,7 +76,7 @@ app.get("/signin", (req: Request, res: Response) => {
 app.get("/redirect", (req: Request, res: Response) => {
   const tokenRequest: msal.AuthorizationCodeRequest = {
     code: req.query.code as string,
-    redirectUri: `http://${host}:${port}/redirect`,
+    redirectUri: `http://${host}/redirect`,
     scopes: ["user.read"],
   };
   pca.acquireTokenByCode(tokenRequest).then((response) => {
