@@ -105,17 +105,22 @@ app.get("/logout", (req: Request, res: Response) => {
   pca
     .getTokenCache()
     .getAllAccounts()
-    .then((response) => {
-      const account = response[0];
-      pca
-        .getTokenCache()
-        .removeAccount(account)
-        .then(() => {
-          res.sendStatus(200);
-        })
-        .catch((error) => {
-          res.status(500).send({ error });
+    .then((accounts) => {
+      if (accounts.length > 0) {
+        const removePromises = accounts.map((account) => {
+          return pca.getTokenCache().removeAccount(account);
         });
+
+        Promise.all(removePromises)
+          .then(() => {
+            res.sendStatus(200);
+          })
+          .catch((error) => {
+            res.status(500).send({ error });
+          });
+      } else {
+        res.sendStatus(200);
+      }
     })
     .catch((error) => {
       res.status(500).send(error);
