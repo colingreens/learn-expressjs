@@ -47,14 +47,21 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 function checkUserRole(req: Request, res: Response, next: NextFunction) {
   pca.getAllAccounts().then((accounts) => {
-    console.log(JSON.stringify(accounts));
-    console.log(accounts[0].idTokenClaims?.groups);
-    const group: string = accounts[0].idTokenClaims?.groups[0];
-    if (group === groupMap.manager) {
-      res.send(widgetHtmlForManager);
-    } else if (group === groupMap.sales) {
-      res.send(widgetHtmlForSales);
-    } else return next();
+    const lastAccountIndex = accounts.length - 1;
+    const lastAccount = accounts[lastAccountIndex];
+    if (
+      lastAccount &&
+      lastAccount.idTokenClaims &&
+      lastAccount.idTokenClaims.groups
+    ) {
+      const group: string = lastAccount.idTokenClaims?.groups[0];
+      if (group === groupMap.manager) {
+        res.send(widgetHtmlForManager);
+      } else if (group === groupMap.sales) {
+        res.send(widgetHtmlForSales);
+      } else return next();
+    }
+    next();
   });
 }
 
